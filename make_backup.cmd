@@ -6,7 +6,10 @@ set ORACLE_DATA_DIR=c:\app\oracle\oradata\tc\
 set BKP_DIR=C:\app\backup
 set TC_DATA=C:\Siemens\tcdata
 set TC_ROOT=C:\Siemens\Teamcenter10
+set tcdatabckp /p ask="Do you want to make backup of TC_DATA directory(y/n)?"
 
+rem Deleting old backups
+rem TODO Make possible to create defined amount of backups.
 del /q %BKP_DIR%\*
 
 echo Stop TC services...
@@ -26,9 +29,10 @@ echo Copy database files from %ORACLE_DATA_DIR%
 
 echo Copy TC volume files from %TC_VOLUME_DIR%
 7z a -aoa -mx1 %BKP_DIR%\tc_bkp.7z %TC_VOLUME_DIR%
-rem echo Copy TC data directory %TC_DATA%
-rem 7z a -aoa -mx1 %BKP_DIR%\tcdata_bkp.7z %TC_DATA%
-
+if %tcdatabckp% == y (
+ echo Copy TC data directory %TC_DATA%
+ 7z a -aoa -mx1 %BKP_DIR%\tcdata_bkp.7z %TC_DATA%
+)
 :: starting database and services back
 echo Start DataBase %ORACLE_SID%
 (

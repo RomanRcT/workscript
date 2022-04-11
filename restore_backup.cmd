@@ -23,8 +23,13 @@ echo Copy database files from %ORACLE_DATA_DIR%
 
 echo Copy TC volume files from %TC_VOLUME_DIR%
 7z x -aoa %BKP_DIR%\tc_bkp.7z -o%TC_VOLUME_DIR%\..\
-rem echo Copy TC data directory %TC_DATA%
-rem 7z x -aoa %BKP_DIR%\tcdata_bkp.7z -o%TC_DATA%\..\
+if exist %BKP_DIR%\tcdata_bkp.7z (
+  set /p ask="Do you want to restore TC_DATA directory(y/n)?"
+  if %ask% == y (
+ echo Copy TC data directory %TC_DATA%
+ 7z x -aoa %BKP_DIR%\tcdata_bkp.7z -o%TC_DATA%\..\
+  )
+)
 
 :: starting database and services back
 echo Start DataBase %ORACLE_SID%
