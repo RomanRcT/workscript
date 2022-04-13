@@ -10,7 +10,7 @@ set TC_ROOT=C:\Siemens\Teamcenter13
 set tcservicename="Teamcenter Server Manager config1_PoolA"
 set fscservicename="Teamcenter FSC Service FSC_tcserver_user"
 set processservicename="Teamcenter Process Manager"
-set tcdatabckp /p ask="Do you want to make backup of TC_DATA directory(y/n)?"
+set /p tcdatabckp="Do you want to make backup of TC_DATA directory(y/n)?"
 
 :: BatchGotAdmin
 :: :-------------------------------------
