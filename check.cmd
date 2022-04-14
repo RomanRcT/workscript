@@ -1,14 +1,6 @@
 @echo off
 SETLOCAL EnableExtensions
 set COUNTER=0
-rem ********** variables **************
-set TC_ROOT=C:\Siemens\Teamcenter10
-set TC_DATA=C:\Siemens\tcdata
-set TNSLISTENER_NAME="OracleOraDB19Home1TNSListener"
-set TC_SERVER_NAME="Teamcenter Server Manager config1_PoolA"
-set dbapassfile="C:\Siemens\Teamcenter13\security\config1_infodba.pwf"
-rem ********** end of variables **************
-
 :: BatchGotAdmin
 :: :-------------------------------------
 REM  --> Check for permissions
@@ -38,11 +30,14 @@ REM --> If error flag set, we do not have admin.
   CD /D "%~dp0"
 :--------------------------------------
 
+call init.cmd
+if %errorlevel% neq 0 (
+goto error
+)
 
 :query_tns
 echo Checking service %TNSLISTENER_NAME%
 sc query %TNSLISTENER_NAME% | findstr RUNNING
-
 if %ERRORLEVEL% == 2 goto trouble
 if %ERRORLEVEL% == 1 goto stopped
 if %ERRORLEVEL% == 0 goto started
@@ -125,5 +120,10 @@ goto end
 :notloggedin
 echo Can't login to TC database
 echo Ask administrator to help
+goto end
+
+
+:error 
+
 :end
 pause

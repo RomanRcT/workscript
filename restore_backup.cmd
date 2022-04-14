@@ -1,16 +1,4 @@
 @echo off
-
-set ORACLE_SID=tc
-set TC_VOLUME_DIR=C:\Siemens\volume
-set ORACLE_DATA_DIR=c:\oracle\database\oradata\tc\
-set FRA_DIR=c:\oracle\database\flash_recovery_area\TC\
-set BKP_DIR=C:\app\backup
-set TC_DATA=C:\Siemens\tcdata
-set TC_ROOT=C:\Siemens\Teamcenter13
-set tcservicename="Teamcenter Server Manager config1_PoolA"
-set fscservicename="Teamcenter FSC Service FSC_tcserver_user"
-set processservicename="Teamcenter Process Manager"
-
 :: BatchGotAdmin
 :: :-------------------------------------
 REM  --> Check for permissions
@@ -39,10 +27,14 @@ REM --> If error flag set, we do not have admin.
   pushd "%CD%"
   CD /D "%~dp0"
 :--------------------------------------
+call init.cmd
+if %errorlevel% neq 0 (
+goto error
+)
 echo Stop TC services...
-sc stop %tcservicename%
-sc stop %processservicename%
-sc stop %fscservicename%
+sc stop %TC_SERVER_NAME%
+sc stop %PROCESS_NAME%
+sc stop %FMS_NAME%
 
 echo Stop DataBase %ORACLE_SID%
 (
@@ -59,13 +51,6 @@ if exist %BKP_DIR%\fra_bkp.7z (
 
 echo Copy TC volume files from %TC_VOLUME_DIR%
 7z x -aoa %BKP_DIR%\tc_bkp.7z -o%TC_VOLUME_DIR%\..\
-if exist %BKP_DIR%\tcdata_bkp.7z (
-  set /p ask="Do you want to restore TC_DATA directory(y/n)?"
-  if %ask% == y (
- echo Copy TC data directory %TC_DATA%
- 7z x -aoa %BKP_DIR%\tcdata_bkp.7z -o%TC_DATA%\..\
-  )
-)
 
 :: starting database and services back
 echo Start DataBase %ORACLE_SID%
@@ -75,8 +60,8 @@ echo Start DataBase %ORACLE_SID%
 ) | sqlplus -s -l /nolog
 
 echo Start DataBase %ORACLE_SID%
-sc start %fscservicename%
-sc start %processservicename%
-sc start %tcservicename%
-
+sc start %FMS_NAME%
+sc start %PROCESS_NAME%
+sc start %TC_SERVER_NAME%
+:error
 pause
