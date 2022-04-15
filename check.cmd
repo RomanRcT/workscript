@@ -104,8 +104,8 @@ goto checktcserver
 
 :checklogin
 echo Check login to TC
-call %TC_DATA%\tc_profilevars
-list_users -u=infodba -pf=%dbapassfile% -g=dba | findstr infodba
+call "%TC_DATA%\tc_profilevars"
+list_users -u=infodba -pf="%dbapassfile%" -g=dba | findstr infodba
 if %ERRORLEVEL% == 1 goto notloggedin
 if %ERRORLEVEL% == 0 goto loggedin
 

@@ -45,8 +45,8 @@ set /a err=%err%+%errorlevel%
 call :serviceexists FMS_NAME FSC
 set /a err=%err%+%errorlevel%
 
-call :oracheck ORACLE_SID
-set /a err=%err%+%errorlevel%
+rem call :oracheck ORACLE_SID
+rem set /a err=%err%+%errorlevel%
 
 goto end 
 
