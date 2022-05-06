@@ -31,9 +31,6 @@ call init.cmd
 if %errorlevel% neq 0 (
 goto error
 )
-rem Deleting old backups
-rem TODO Make possible to create defined amount of backups.
-del /q %BKP_DIR%\*
 
 echo Stop TC services...
 sc stop %TC_SERVER_NAME%
@@ -47,13 +44,16 @@ echo Stop DataBase %ORACLE_SID%
 ) | sqlplus -s -l /nolog
 
 echo Copy database files from %ORACLE_DATA_DIR%
-7z a -aoa -mx1 %BKP_DIR%\db_bkp.7z %ORACLE_DATA_DIR%
+:: 7z a -aoa -mx1 %BKP_DIR%\db_bkp.7z %ORACLE_DATA_DIR%
+call create_bckp.cmd %BKP_DIR% db_bkp %ORACLE_DATA_DIR%
 if exist %FRA_DIR% (
-7z a -aoa -mx1 %BKP_DIR%\fra_bkp.7z %FRA_DIR%
+:: 7z a -aoa -mx1 %BKP_DIR%\fra_bkp.7z %FRA_DIR%
+call create_bckp.cmd %BKP_DIR% fra_bkp %FRA_DIR%
 )
 
 echo Copy TC volume files from %TC_VOLUME_DIR%
-7z a -aoa -mx1 %BKP_DIR%\tc_bkp.7z %TC_VOLUME_DIR%
+:: 7z a -aoa -mx1 %BKP_DIR%\tc_bkp.7z %TC_VOLUME_DIR%
+call create_bckp.cmd %BKP_DIR% tc_bkp %TC_VOLUME_DIR%
 
 :: starting database and services back
 echo Start DataBase %ORACLE_SID%

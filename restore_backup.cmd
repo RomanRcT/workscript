@@ -42,15 +42,15 @@ echo Stop DataBase %ORACLE_SID%
   echo shutdown immediate;  
 ) | sqlplus -s -l /nolog
 
-echo Copy database files from %ORACLE_DATA_DIR%
-7z x -aoa %BKP_DIR%\db_bkp.7z -o%ORACLE_DATA_DIR%\..\
-if exist %BKP_DIR%\fra_bkp.7z (
-7z x -aoa %BKP_DIR%\fra_bkp.7z -o%FRA_DIR%\..\ 
-)
+::echo Copy database files from %ORACLE_DATA_DIR%
+::7z x -aoa %BKP_DIR%\db_bkp.7z -o%ORACLE_DATA_DIR%\..\
+::if exist %BKP_DIR%\fra_bkp.7z (
+::7z x -aoa %BKP_DIR%\fra_bkp.7z -o%FRA_DIR%\..\ 
+::)
 
-
-echo Copy TC volume files from %TC_VOLUME_DIR%
-7z x -aoa %BKP_DIR%\tc_bkp.7z -o%TC_VOLUME_DIR%\..\
+call rest_bckp.cmd %BKP_DIR%
+::echo Copy TC volume files from %TC_VOLUME_DIR%
+::7z x -aoa %BKP_DIR%\tc_bkp.7z -o%TC_VOLUME_DIR%\..\
 
 :: starting database and services back
 echo Start DataBase %ORACLE_SID%
