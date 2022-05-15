@@ -38,11 +38,11 @@ if "%AWC%"=="yes" (
 call :serviceexists PROCESS_NAME
 set /a err=%err%+%errorlevel%
 )
-call :serviceexists TNSLISTENER_NAME TNS
+call :serviceexists2 TNSLISTENER_NAME *TNS*
 set /a err=%err%+%errorlevel%
-call :serviceexists TC_SERVER_NAME Pool
+call :serviceexists2 TC_SERVER_NAME *Teamcenter*Pool*
 set /a err=%err%+%errorlevel%
-call :serviceexists FMS_NAME FSC
+call :serviceexists2 FMS_NAME *FSC*
 set /a err=%err%+%errorlevel%
 
 rem call :oracheck ORACLE_SID
@@ -60,6 +60,22 @@ echo      Please check %var_name% variable in the init.cmd file.
 exit /B 1
 )
 exit /B 0
+
+:serviceexists2
+powershell ./CheckSrv.ps1 %2
+set /p Myvar=<srvname.txt
+if "%Myvar%"=="" (
+del srvname.txt
+exit /B 1
+) else (
+echo Myvar=[%Myvar%]
+set "%~1=%Myvar%
+del srvname.txt
+exit /B 0
+)
+exit /B 1
+
+
 
 :serviceexists
 set var_name=%1

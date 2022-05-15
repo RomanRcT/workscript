@@ -33,9 +33,9 @@ goto error
 )
 
 echo Stop TC services...
-sc stop %TC_SERVER_NAME%
-sc stop %PROCESS_NAME%
-sc stop %FMS_NAME%
+sc stop "%TC_SERVER_NAME%"
+sc stop "%PROCESS_NAME%"
+sc stop "%FMS_NAME%"
 
 echo Stop DataBase %ORACLE_SID%
 (
@@ -63,8 +63,8 @@ echo Start DataBase %ORACLE_SID%
 ) | sqlplus -s -l /nolog
 
 echo Start DataBase %ORACLE_SID%
-sc start %FMS_NAME%
-sc start %PROCESS_NAME%
-sc start %TC_SERVER_NAME%
+sc start "%FMS_NAME%"
+sc start "%PROCESS_NAME%"
+sc start "%TC_SERVER_NAME%"
 :error
 pause

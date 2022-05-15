@@ -53,7 +53,7 @@ goto query_tc
 :stopped
 echo %TNSLISTENER_NAME% is stopped
 echo Starting service
-net start %TNSLISTENER_NAME%
+sc start "%TNSLISTENER_NAME%"
 goto restart_tc
 :erro
 echo Error please check your command.. mas bro 
@@ -62,14 +62,14 @@ goto end
 :restart_tc
 echo Need to restart %TC_SERVER_NAME% after starting %TNSLISTENER_NAME%
 timeout 5
-net stop %TC_SERVER_NAME%
+sc stop "%TC_SERVER_NAME%"
 timeout 3
-net start %TC_SERVER_NAME%
+sc start "%TC_SERVER_NAME%"
 timeout 3
 
 :query_tc
 echo Checking service %TC_SERVER_NAME%
-sc query %TC_SERVER_NAME% | findstr RUNNING
+sc query "%TC_SERVER_NAME%" | findstr RUNNING
 
 if %ERRORLEVEL% == 2 goto troubletc
 if %ERRORLEVEL% == 1 goto stoppedtc
@@ -86,7 +86,7 @@ goto checktcserver
 :stoppedtc
 echo %TC_SERVER_NAME% is stopped
 echo Starting service
-net start %TC_SERVER_NAME%
+sc start "%TC_SERVER_NAME%"
 goto query_tc
 :erro
 echo Error please check your command.. mas bro 
