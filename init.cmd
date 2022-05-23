@@ -8,7 +8,7 @@ set TNSLISTENER_NAME=xxxxxxxx
 set TC_SERVER_NAME=xxxxxxxxx
 set FMS_NAME=xxxxxxxxxx
 rem ==============
-set AWC=no
+set AWC=yes
 set "TC_ROOT=C:\Siemens\Teamcenter13"
 set "TC_DATA=C:\Siemens\tcdata"
 set PROCESS_NAME="Teamcenter Process Manager"
@@ -35,7 +35,7 @@ set /a err=%err%+%errorlevel%
 call :check dbapassfile File
 set /a err=%err%+%errorlevel%
 if "%AWC%"=="yes" (
-call :serviceexists PROCESS_NAME
+call :serviceexists PROCESS_NAME 
 set /a err=%err%+%errorlevel%
 )
 call :serviceexists2 TNSLISTENER_NAME *TNS*
@@ -62,13 +62,15 @@ exit /B 1
 exit /B 0
 
 :serviceexists2
-powershell ./CheckSrv.ps1 %2
+set srvname=%2
+REM echo srvname = %srvname%
+powershell ./CheckSrv.ps1 %srvname%
 set /p Myvar=<srvname.txt
 if "%Myvar%"=="" (
 del srvname.txt
 exit /B 1
 ) else (
-echo Myvar=[%Myvar%]
+REM echo Myvar=[%Myvar%]
 set "%~1=%Myvar%
 del srvname.txt
 exit /B 0
