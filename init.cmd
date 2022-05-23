@@ -84,7 +84,7 @@ set var_name=%1
 set search_str=%2
 rem set var_value=!%var_name%!
 call set var_value=%%%var_name%%%
-sc query | findstr /C:"SERVICE_NAME: %var_value:~1,-1%">nul
+sc query state= all | findstr /C:"SERVICE_NAME: %var_value:~1,-1%">nul
 if %errorlevel% == 0 (
   exit /B 0
 ) else (
