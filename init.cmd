@@ -19,6 +19,7 @@ set ORACLE_DATA_DIR=c:\app\oracle\oradata\tc\
 set FRA_DIR=c:\app\oracle\flash_recovery_area\TC\
 set BKP_DIR=C:\app\backup
 rem ********** end of variables **************
+if not exist %BKP_DIR% md %BKP_DIR%
 :start
 call :check TC_ROOT Directory
 set /a err=%err%+%errorlevel%
