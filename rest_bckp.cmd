@@ -16,6 +16,10 @@ echo Nothing to restore.
 goto end 
 )
 :chooseBackup
+if NOT '%2'=='' (
+set choose=%2
+goto restoreBackups
+) else (
 set /p choose=Enter number of resore point to restore:
 if 1!choose! equ +1!choose!  (
 	if !choose! geq 1 (
@@ -23,6 +27,7 @@ if 1!choose! equ +1!choose!  (
 			goto restoreBackups
 		)
 	) 
+)
 )
 echo Please enter 1 ^<= number ^<= !c!.
 goto listBackups

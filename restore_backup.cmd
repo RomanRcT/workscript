@@ -47,8 +47,11 @@ echo Stop DataBase %ORACLE_SID%
 ::if exist %BKP_DIR%\fra_bkp.7z (
 ::7z x -aoa %BKP_DIR%\fra_bkp.7z -o%FRA_DIR%\..\ 
 ::)
-
+if NOT '%1'=='' (
+call rest_bckp.cmd %BKP_DIR% %1
+) else (
 call rest_bckp.cmd %BKP_DIR%
+)
 ::echo Copy TC volume files from %TC_VOLUME_DIR%
 ::7z x -aoa %BKP_DIR%\tc_bkp.7z -o%TC_VOLUME_DIR%\..\
 
