@@ -21,6 +21,7 @@ c:\app\backup\tcdata_incr_02.7z;c:\Teamcenter13\tcdata
 ```
 If you create several backups consequently information about these backups are stored in one .state file. When you try to create next backup for created backup, a new .state file will be created and information about another backups for current state will be stored in this .state file.
 
+Update 20.03.2003
 For script `restore_backup.bat` now is possible to use number of backup to restore in the param of script, for example
 ```
 restore_backup.cmd 2
